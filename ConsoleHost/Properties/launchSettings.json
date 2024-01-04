@@ -1,0 +1,14 @@
+{
+  "profiles": {
+    "WSL": {
+      "commandName": "WSL2",
+      "distributionName": ""
+    },
+    "Local Card": {
+      "commandName": "Project",
+      "commandLineArgs": "-v -s .\\sqlexpress -d card",
+      "hotReloadEnabled": false,
+      "sqlDebugging": true
+    }
+  }
+}
