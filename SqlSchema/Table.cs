@@ -10,5 +10,6 @@ public record Table
     [JsonIgnore]
     public int ObjectId { get; set; }
 
+    public IList<Column> Columns { get; set; } = new List<Column>();
     public IList<Index> Indexes { get; set; } = new List<Index>();
 }

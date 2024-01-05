@@ -22,21 +22,28 @@ public class SchemaExtractor
         }
 
         using var connection = new SqlConnection(builder.ConnectionString);
+
+        // extract tables
         var sql = "select s.name as [schema], t.* from sys.tables t join sys.schemas s on s.schema_id = t.schema_id";
         var tables = connection.Query<Table>(sql).ToList();
-        var tablesDictionary = tables.ToDictionary(x => x.ObjectId);
-        sql = "select i.* from sys.indexes i join sys.tables t on t.object_id = i.object_id";
-        var indexes = connection.Query<Index>(sql).ToList();
-        indexes.ForEach(x => tablesDictionary[x.ObjectId].Indexes.Add(x));
-
         var schema = new Schema(tables);
+
+        // extract columns
+        sql = "select t.name as type, c.* from sys.columns c join sys.types t on t.user_type_id = c.user_type_id";
+        var columns = connection.Query<Column>(sql).ToList();
+        columns.ForEach(schema.AddColumn);
+
+        // extract indexes
+        sql = "select * from sys.indexes";
+        var indexes = connection.Query<Index>(sql).ToList();
+        indexes.ForEach(schema.AddIndex);
+
         var json = JsonConvert.SerializeObject(schema, Formatting.Indented);
         Console.WriteLine(json);
 
         if (verbose)
         {
-            var statistics = new Statistics(schema.SchemaCount(), schema.Tables.Count);
-            json = JsonConvert.SerializeObject(statistics, Formatting.Indented);
+            json = JsonConvert.SerializeObject(schema.Statistics(), Formatting.Indented);
             Console.Error.WriteLine("Statistics");
             Console.Error.WriteLine(json);
         }
