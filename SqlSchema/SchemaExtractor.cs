@@ -6,7 +6,7 @@ namespace SqlSchema;
 
 public class SchemaExtractor
 {
-    public static void Run(string server, string database, bool verbose)
+    public static void Run(string server, string database, bool verbose, bool debug)
     {
         DefaultTypeMap.MatchNamesWithUnderscores = true;
         var builder = new SqlConnectionStringBuilder
@@ -16,7 +16,7 @@ public class SchemaExtractor
             IntegratedSecurity = true,
             TrustServerCertificate = true,
         };
-        if (verbose)
+        if (debug)
         {
             Console.Error.WriteLine($"Connecting as [{builder.ConnectionString}]");
         }

@@ -14,6 +14,6 @@ public class Extract: Base
     public new void Run()
     {
         base.Run();
-        SchemaExtractor.Run(Server, Database, Verbose);
+        SchemaExtractor.Run(Server, Database, Verbose, Debug);
     }
 }

@@ -28,6 +28,11 @@ public class Schema
         }
     }
 
+    public (IList<Table>, IList<Table>, IList<Table>) CompareWith(Schema target)
+    {
+
+    }
+
     public dynamic Statistics()
     {
         return new

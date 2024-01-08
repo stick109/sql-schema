@@ -7,6 +7,9 @@ namespace SqlSchema.ConsoleHost.Options
         [Option('v', Default = false, HelpText = "Verbose")]
         public bool Verbose { get; set; }
 
+        [Option("debug", Default = false, HelpText = "Verbose")]
+        public bool Debug { get; set; }
+
         public void Run()
         {
             if (Verbose)
