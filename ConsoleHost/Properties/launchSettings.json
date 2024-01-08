@@ -5,10 +5,11 @@
       "distributionName": ""
     },
     "Local Card": {
-      "commandName": "Project",
-      "commandLineArgs": "-v -s .\\sqlexpress -d card",
-      "hotReloadEnabled": false,
-      "sqlDebugging": true
+        "workingDirectory": "$(MSBuildProjectDirectory)\\Local",
+        "commandName": "Project",
+        "commandLineArgs": "compare -s local.json -t remote.json -v",
+        "hotReloadEnabled": false,
+        "sqlDebugging": true
     }
   }
 }

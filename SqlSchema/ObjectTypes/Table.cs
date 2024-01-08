@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Newtonsoft.Json;
 
-namespace SqlSchema;
+namespace SqlSchema.ObjectTypes;
 
 public record Table
 {

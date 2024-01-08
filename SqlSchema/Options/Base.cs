@@ -1,6 +1,6 @@
 ﻿using CommandLine;
 
-namespace SqlSchema.ConsoleHost.Options
+namespace SqlSchema.Options
 {
     public class Base
     {

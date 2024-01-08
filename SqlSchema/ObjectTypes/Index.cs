@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace SqlSchema;
+namespace SqlSchema.ObjectTypes;
 
 public record Index
 {
