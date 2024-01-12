@@ -22,13 +22,20 @@ public class Comparer
         {
             TablesMissingInSource = missingInSource,
             TablesMissingInTarget = missingInTarget,
-            Statistics = new
+        };
+        var json = JsonConvert.SerializeObject(diff, Formatting.Indented);
+        Console.WriteLine(json);
+
+        if (options.Verbose)
+        {
+            var statistics = new
             {
                 MissingInSourceCount = missingInSource.Count,
                 MissingInTargetCount = missingInTarget.Count,
-            }
-        };
-        var json = JsonConvert.SerializeObject(diff, Formatting.Indented);
-        Console.Error.WriteLine(json);
+            };
+            Console.Error.WriteLine("Statistics:");
+            json = JsonConvert.SerializeObject(statistics, Formatting.Indented);
+            Console.Error.WriteLine(json);
+        }
     }
 }

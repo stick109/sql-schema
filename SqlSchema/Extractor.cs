@@ -40,7 +40,7 @@ public class Extractor
         schema.Add(columns);
 
         // extract indexes
-        sql = "select * from sys.indexes";
+        sql = "select * from sys.indexes where type != 0";
         var indexes = connection.Query<Index>(sql).ToList();
         schema.Add(indexes);
 
@@ -50,7 +50,7 @@ public class Extractor
         if (options.Verbose)
         {
             json = JsonConvert.SerializeObject(schema.Statistics(), Formatting.Indented);
-            Console.Error.WriteLine("Statistics");
+            Console.Error.WriteLine("Statistics:");
             Console.Error.WriteLine(json);
         }
     }
