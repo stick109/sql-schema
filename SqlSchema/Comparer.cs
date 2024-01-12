@@ -13,11 +13,23 @@ public class Comparer
         var sourceJson = File.ReadAllText(options.Source);
         var source = JsonConvert.DeserializeObject<Schema>(sourceJson) ?? throw new Exception($"Unable to deserialize {options.Source}");
         var targetJson = File.ReadAllText(options.Target);
-        var target = JsonConvert.DeserializeObject<Schema>(targetJson) ?? throw new Exception($"Unable to deserialize {options.Target}"); ;
-        var sourceTables = source.Tables.ToHashSet();
-        var targetTables = target.Tables.ToHashSet();
+        var target = JsonConvert.DeserializeObject<Schema>(targetJson) ?? throw new Exception($"Unable to deserialize {options.Target}");
+
+        HashSet<Table> sourceTables = source.Tables.ToHashSet();
+        HashSet<Table> targetTables = target.Tables.ToHashSet();
+
         var missingInSource = targetTables.Except(sourceTables).ToList();
         var missingInTarget = sourceTables.Except(targetTables).ToList();
+        List<Table> presentInBoth = sourceTables.Intersect(targetTables).ToList();
+
+        void CompareColumns()
+        {
+            presentInBoth.ForEach(table =>
+            {
+                var sourceTable = sourceTables.First(x => x == table);
+                var targetTable = targetTables.First(x => x == table);
+            });
+        }
 
         string BuildDiffJson()
         {
@@ -49,8 +61,9 @@ public class Comparer
         {
             var statistics = new
             {
-                MissingInSourceCount = missingInSource.Count,
-                MissingInTargetCount = missingInTarget.Count,
+                TablesMissingInSource = missingInSource.Count,
+                TablesMissingInTarget = missingInTarget.Count,
+                TablesPresentInBoth = presentInBoth.Count,
             };
             Console.Error.WriteLine("Statistics:");
             json = JsonConvert.SerializeObject(statistics, Formatting.Indented);
