@@ -18,12 +18,31 @@ public class Comparer
         var targetTables = target.Tables.ToHashSet();
         var missingInSource = targetTables.Except(sourceTables).ToList();
         var missingInTarget = sourceTables.Except(targetTables).ToList();
-        var diff = new
+
+        string BuildDiffJson()
         {
-            TablesMissingInSource = missingInSource,
-            TablesMissingInTarget = missingInTarget,
-        };
-        var json = JsonConvert.SerializeObject(diff, Formatting.Indented);
+            if (options.DetailedOutput)
+            {
+                var diff = new
+                {
+                    TablesMissingInSource = missingInSource,
+                    TablesMissingInTarget = missingInTarget,
+                };
+                return JsonConvert.SerializeObject(diff, Formatting.Indented);
+            }
+            else
+            {
+                string Format(Table x) => $"{x.Schema}.{x.Name}";
+                var diff = new
+                {
+                    TablesMissingInSource = missingInSource.Select(Format),
+                    TablesMissingInTarget = missingInTarget.Select(Format),
+                };
+                return JsonConvert.SerializeObject(diff, Formatting.Indented);
+            }
+        }
+
+        var json = BuildDiffJson();
         Console.WriteLine(json);
 
         if (options.Verbose)

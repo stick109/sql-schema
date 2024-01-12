@@ -10,4 +10,7 @@ public class Compare : Base
 
     [Option('t', Required = true, HelpText = "Target schema")]
     public string Target { get; set; } = null!;
+
+    [Option('d', Default = false, HelpText = "Show all properties of missing tables, including columns and indexes")]
+    public bool DetailedOutput { get; set; }
 }
