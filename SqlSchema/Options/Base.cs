@@ -10,7 +10,7 @@ namespace SqlSchema.Options
         [Option("debug", Default = false, HelpText = "Verbose")]
         public bool Debug { get; set; }
 
-        public void Run()
+        public void Print()
         {
             if (Verbose)
             {

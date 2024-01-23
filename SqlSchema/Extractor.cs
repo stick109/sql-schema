@@ -11,7 +11,7 @@ public class Extractor
 {
     public static void Run(Extract options)
     {
-        options.Run();
+        options.Print();
 
         DefaultTypeMap.MatchNamesWithUnderscores = true;
         var builder = new SqlConnectionStringBuilder

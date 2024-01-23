@@ -8,7 +8,7 @@ public class Comparer
 {
     public static void Run(Compare options)
     {
-        options.Run();
+        options.Print();
 
         var sourceJson = File.ReadAllText(options.Source);
         var source = JsonConvert.DeserializeObject<Schema>(sourceJson) ?? throw new Exception($"Unable to deserialize {options.Source}");
@@ -20,15 +20,29 @@ public class Comparer
 
         var missingInSource = targetTables.Except(sourceTables).ToList();
         var missingInTarget = sourceTables.Except(targetTables).ToList();
-        List<Table> presentInBoth = sourceTables.Intersect(targetTables).ToList();
+        var presentInBoth = sourceTables.Intersect(targetTables).ToList();
 
-        void CompareColumns()
+        List<TableColumnDifference> CompareColumns()
         {
-            presentInBoth.ForEach(table =>
+            var columnDifferences = presentInBoth!.Select(table =>
             {
                 var sourceTable = sourceTables.First(x => x == table);
                 var targetTable = targetTables.First(x => x == table);
-            });
+                var sourceColumnNames = sourceTable.Columns.Select(x => x.Name).ToList();
+                var targetColumnNames = targetTable.Columns.Select(x => x.Name).ToList();
+
+                var columnDifference = new TableColumnDifference
+                {
+                    Table = table.Name,
+                    MissingInSource = targetColumnNames.Except(sourceColumnNames).ToList(),
+                    MissingInTarget = sourceColumnNames.Except(targetColumnNames).ToList(),
+                    Different = ColumnDifference.Compute(sourceTable.Columns, targetTable.Columns),
+                };
+                return columnDifference;
+            })
+                .ToList();
+
+            return columnDifferences;
         }
 
         string BuildDiffJson()
@@ -49,6 +63,7 @@ public class Comparer
                 {
                     TablesMissingInSource = missingInSource.Select(Format),
                     TablesMissingInTarget = missingInTarget.Select(Format),
+                    TablesWithColumnDifferences = CompareColumns(),
                 };
                 return JsonConvert.SerializeObject(diff, Formatting.Indented);
             }
