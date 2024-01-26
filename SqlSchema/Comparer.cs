@@ -1,8 +1,11 @@
 ﻿using Newtonsoft.Json;
+using SqlSchema.Differences;
 using SqlSchema.ObjectTypes;
 using SqlSchema.Options;
 
 namespace SqlSchema;
+
+using Index = ObjectTypes.Index;
 
 public class Comparer
 {
@@ -20,56 +23,33 @@ public class Comparer
 
         var missingInSource = targetTables.Except(sourceTables).ToList();
         var missingInTarget = sourceTables.Except(targetTables).ToList();
-        var presentInBoth = sourceTables.Intersect(targetTables).ToList();
 
-        List<TableColumnDifference> CompareColumns()
+        string json;
+        var tablesWithColumnDifferences = TableWithDifferences<Column>.Compute(sourceTables, targetTables);
+        var tablesWithIndexDifferences = TableWithDifferences<Index>.Compute(sourceTables, targetTables);
+        if (options.DetailedOutput)
         {
-            var columnDifferences = presentInBoth!.Select(table =>
+            var diff = new
             {
-                var sourceTable = sourceTables.First(x => x == table);
-                var targetTable = targetTables.First(x => x == table);
-                var sourceColumnNames = sourceTable.Columns.Select(x => x.Name).ToList();
-                var targetColumnNames = targetTable.Columns.Select(x => x.Name).ToList();
-
-                var columnDifference = new TableColumnDifference
-                {
-                    Table = table.Name,
-                    MissingInSource = targetColumnNames.Except(sourceColumnNames).ToList(),
-                    MissingInTarget = sourceColumnNames.Except(targetColumnNames).ToList(),
-                    Different = ColumnDifference.Compute(sourceTable.Columns, targetTable.Columns),
-                };
-                return columnDifference;
-            })
-                .ToList();
-
-            return columnDifferences;
+                TablesMissingInSource = missingInSource,
+                TablesMissingInTarget = missingInTarget,
+                TablesWithColumnDifferences = tablesWithColumnDifferences,
+                TablesWithIndexDifferences = tablesWithIndexDifferences,
+            };
+            json = JsonConvert.SerializeObject(diff, Formatting.Indented);
         }
-
-        string BuildDiffJson()
+        else
         {
-            if (options.DetailedOutput)
+            string Format(Table x) => $"{x.Schema}.{x.Name}";
+            var diff = new
             {
-                var diff = new
-                {
-                    TablesMissingInSource = missingInSource,
-                    TablesMissingInTarget = missingInTarget,
-                };
-                return JsonConvert.SerializeObject(diff, Formatting.Indented);
-            }
-            else
-            {
-                string Format(Table x) => $"{x.Schema}.{x.Name}";
-                var diff = new
-                {
-                    TablesMissingInSource = missingInSource.Select(Format),
-                    TablesMissingInTarget = missingInTarget.Select(Format),
-                    TablesWithColumnDifferences = CompareColumns(),
-                };
-                return JsonConvert.SerializeObject(diff, Formatting.Indented);
-            }
+                TablesMissingInSource = missingInSource.Select(Format),
+                TablesMissingInTarget = missingInTarget.Select(Format),
+                TablesWithColumnDifferences = tablesWithColumnDifferences,
+                TablesWithIndexDifferences = tablesWithIndexDifferences,
+            };
+            json = JsonConvert.SerializeObject(diff, Formatting.Indented);
         }
-
-        var json = BuildDiffJson();
         Console.WriteLine(json);
 
         if (options.Verbose)
@@ -78,7 +58,8 @@ public class Comparer
             {
                 TablesMissingInSource = missingInSource.Count,
                 TablesMissingInTarget = missingInTarget.Count,
-                TablesPresentInBoth = presentInBoth.Count,
+                TablesWithColumnDifferences = tablesWithColumnDifferences.Count,
+                TablesWithIndexDifferences = tablesWithIndexDifferences.Count,
             };
             Console.Error.WriteLine("Statistics:");
             json = JsonConvert.SerializeObject(statistics, Formatting.Indented);
