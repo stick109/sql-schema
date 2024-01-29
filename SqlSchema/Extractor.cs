@@ -44,6 +44,16 @@ public class Extractor
         var indexes = connection.Query<Index>(sql).ToList();
         schema.Add(indexes);
 
+        // extract index columns
+        sql = @"
+select c.name, ic.* from sys.index_columns ic 
+join sys.tables t   on t.object_id = ic.object_id
+join sys.indexes i  on i.object_id = ic.object_id and i.index_id = ic.index_id
+join sys.columns c  on c.object_id = ic.object_id and c.column_id = ic.column_id;
+";
+        var indexColumns = connection.Query<IndexColumn>(sql).ToList();
+        schema.Add(indexColumns);
+
         var json = JsonConvert.SerializeObject(schema, Formatting.Indented);
         Console.WriteLine(json);
 

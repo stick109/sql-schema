@@ -52,6 +52,10 @@ public class Comparer
         }
         Console.WriteLine(json);
 
+        var indexesMissingInSource = tablesWithIndexDifferences.SelectMany(x => x.MissingInSource).Count();
+        var indexesMissingInTarget = tablesWithIndexDifferences.SelectMany(x => x.MissingInTarget).Count();
+        var indexesWithDifferences = tablesWithIndexDifferences.SelectMany(x => x.Different).Count();
+
         if (options.Verbose)
         {
             var statistics = new
@@ -60,6 +64,9 @@ public class Comparer
                 TablesMissingInTarget = missingInTarget.Count,
                 TablesWithColumnDifferences = tablesWithColumnDifferences.Count,
                 TablesWithIndexDifferences = tablesWithIndexDifferences.Count,
+                IndexesMissingInSource = indexesMissingInSource,
+                IndexesMissingInTarget = indexesMissingInTarget,
+                IndexesWithDifferences = indexesWithDifferences,
             };
             Console.Error.WriteLine("Statistics:");
             json = JsonConvert.SerializeObject(statistics, Formatting.Indented);

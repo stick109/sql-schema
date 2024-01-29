@@ -3,11 +3,15 @@ using Newtonsoft.Json;
 
 namespace SqlSchema.ObjectTypes;
 
-public record Table : Base
+public class Table : Base
 {
+    [JsonProperty(Order = 1)]
     public string Schema { get; set; } = null!;
 
+    [JsonProperty(Order = 2)]
     public List<Column> Columns { get; set; } = new();
+
+    [JsonProperty(Order = 3)]
     public List<Index> Indexes { get; set; } = new();
 
     [JsonIgnore]
@@ -33,9 +37,9 @@ public record Table : Base
 
     #region Equality
 
-    public virtual bool Equals(Table? other)
+    public override bool Equals(object? obj)
     {
-        if (ReferenceEquals(null, other)) return false;
+        if (obj is not Table other) return false;
         if (ReferenceEquals(this, other)) return true;
         return string.Equals(Name, other.Name, StringComparison) && 
                string.Equals(Schema, other.Schema, StringComparison);

@@ -3,19 +3,26 @@ using Newtonsoft.Json;
 
 namespace SqlSchema.ObjectTypes;
 
-public record Column : Base
+public class Column : Base
 {
+    [JsonProperty(Order = 1)]
     public string Type { get; set; } = null!;
+
+    [JsonProperty(Order = 2)]
     public int MaxLength { get; set; }
+
+    [JsonProperty(Order = 3)]
     public int Precision { get; set; }
+
+    [JsonProperty(Order = 4)]
     public int Scale { get; set; }
 
     [JsonIgnore]
     public int ObjectId { get; set; }
 
-    public virtual bool Equals(Column? other)
+    public override bool Equals(object? obj)
     {
-        if (ReferenceEquals(null, other)) return false;
+        if (obj is not Column other) return false;
         if (ReferenceEquals(this, other)) return true;
         return base.Equals(other)
                && Type == other.Type 

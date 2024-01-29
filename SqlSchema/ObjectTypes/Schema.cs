@@ -39,6 +39,18 @@ public class Schema
         });
     }
 
+    public void Add(List<IndexColumn> indexColumns)
+    {
+        indexColumns.ForEach(indexColumn =>
+        {
+            if (_map!.TryGetValue(indexColumn.ObjectId, out var table))
+            {
+                var index = table.Indexes.First(x => x.IndexId == indexColumn.IndexId);
+                index.IndexColumns.Add(indexColumn);
+            }
+        });
+    }
+
     public (IList<Table>, IList<Table>, IList<Table>) CompareWith(Schema target)
     {
         return default;

@@ -1,12 +1,14 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using Newtonsoft.Json;
 
 namespace SqlSchema.ObjectTypes;
 
-public record Base
+public class Base
 {
     protected static StringComparison StringComparison = StringComparison.OrdinalIgnoreCase;
     protected static StringComparer StringComparer = StringComparer.OrdinalIgnoreCase;
 
+    [JsonProperty(Order = 0)]
     public string Name { get; set; } = null!;
 
     [SuppressMessage("ReSharper", "NonReadonlyMemberInGetHashCode")]
@@ -17,9 +19,9 @@ public record Base
         return hashCode.ToHashCode();
     }
 
-    public virtual bool Equals(Base? other)
+    public override bool Equals(object? obj)
     {
-        if (ReferenceEquals(null, other)) return false;
+        if (obj is not Base other) return false;
         if (ReferenceEquals(this, other)) return true;
         return string.Equals(Name, other.Name, StringComparison);
     }

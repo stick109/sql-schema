@@ -15,8 +15,8 @@ public record TableWithDifferences<T> where T : Base
 
         var result = presentInBoth.Select(table =>
             {
-                var sourceTable = sourceTables.First(x => x == table);
-                var targetTable = targetTables.First(x => x == table);
+                var sourceTable = sourceTables.First(x => x.Equals(table));
+                var targetTable = targetTables.First(x => x.Equals(table));
 
                 var sourceMember = sourceTable.GetMember<T>();
                 var targetMember = targetTable.GetMember<T>();

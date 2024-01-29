@@ -8,19 +8,19 @@ public record Difference<T> where T : Base
     public T Source { get; set; } = null!;
     public T Target { get; set; } = null!;
 
-    public static List<Difference<T>> Compute(IList<T> source, IList<T> target)
+    public static List<Difference<T>> Compute(IList<T> sourceList, IList<T> targetList)
     {
-        var targetColumns = target.ToDictionary(x => x.Name);
-        var result = source.Select(sourceColumn =>
+        var targetDictionary = targetList.ToDictionary(x => x.Name);
+        var result = sourceList.Select(source =>
             {
-                if (!targetColumns.ContainsKey(sourceColumn.Name)) return null;
-                var targetColumn = targetColumns[sourceColumn.Name];
-                if (targetColumn == sourceColumn) return null;
+                if (!targetDictionary.ContainsKey(source.Name)) return null;
+                var target = targetDictionary[source.Name];
+                if (target.Equals(source)) return null;
                 return new Difference<T>
                 {
-                    Name = sourceColumn.Name,
-                    Source = sourceColumn,
-                    Target = targetColumn,
+                    Name = source.Name,
+                    Source = source,
+                    Target = target,
                 };
             })
             .Where(x => x != null)
