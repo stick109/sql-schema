@@ -14,6 +14,9 @@ public class Table : Base
     [JsonProperty(Order = 3)]
     public List<Index> Indexes { get; set; } = new();
 
+    [JsonProperty(Order = 4)]
+    public List<ForeignKey> ForeignKeys { get; set; } = new();
+
     [JsonIgnore]
     public int ObjectId { get; set; }
 
@@ -25,6 +28,8 @@ public class Table : Base
                 return Columns.Select(x => x as T).ToList()!;
             case { } type when type == typeof(Index):
                 return Indexes.Select(x => x as T).ToList()!;
+            case { } type when type == typeof(ForeignKey):
+                return ForeignKeys.Select(x => x as T).ToList()!;
             default:
                 throw new Exception($"Unknown type {typeof(T).Name}");
         }

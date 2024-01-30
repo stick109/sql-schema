@@ -51,6 +51,29 @@ public class Schema
         });
     }
 
+    public void Add(List<ForeignKey> foreignKeys)
+    {
+        foreignKeys.ForEach(foreignKey =>
+        {
+            if (_map!.TryGetValue(foreignKey.ParentObjectId, out var table))
+            {
+                table.ForeignKeys.Add(foreignKey);
+            }
+        });
+    }
+
+    public void Add(List<ForeignKeyColumn> foreignKeyColumns)
+    {
+        foreignKeyColumns.ForEach(foreignKeyColumn =>
+        {
+            if (_map!.TryGetValue(foreignKeyColumn.ParentObjectId, out var table))
+            {
+                var foreignKey = table.ForeignKeys.First(x => x.ObjectId == foreignKeyColumn.ConstraintObjectId);
+                foreignKey.ForeignKeyColumns.Add(foreignKeyColumn);
+            }
+        });
+    }
+
     public (IList<Table>, IList<Table>, IList<Table>) CompareWith(Schema target)
     {
         return default;
