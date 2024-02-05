@@ -27,6 +27,8 @@ public class Comparer
         string json;
         var tablesWithColumnDifferences = TableWithDifferences<Column>.Compute(sourceTables, targetTables);
         var tablesWithIndexDifferences = TableWithDifferences<Index>.Compute(sourceTables, targetTables);
+        var tablesWithForeignKeyDifferences = TableWithDifferences<ForeignKey>.Compute(sourceTables, targetTables);
+
         if (options.DetailedOutput)
         {
             var diff = new
@@ -35,6 +37,7 @@ public class Comparer
                 TablesMissingInTarget = missingInTarget,
                 TablesWithColumnDifferences = tablesWithColumnDifferences,
                 TablesWithIndexDifferences = tablesWithIndexDifferences,
+                TablesWithForeignKeyDifferences = tablesWithForeignKeyDifferences,
             };
             json = JsonConvert.SerializeObject(diff, Formatting.Indented);
         }
@@ -47,6 +50,7 @@ public class Comparer
                 TablesMissingInTarget = missingInTarget.Select(Format),
                 TablesWithColumnDifferences = tablesWithColumnDifferences,
                 TablesWithIndexDifferences = tablesWithIndexDifferences,
+                TablesWithForeignKeyDifferences = tablesWithForeignKeyDifferences,
             };
             json = JsonConvert.SerializeObject(diff, Formatting.Indented);
         }
@@ -55,6 +59,10 @@ public class Comparer
         var indexesMissingInSource = tablesWithIndexDifferences.SelectMany(x => x.MissingInSource).Count();
         var indexesMissingInTarget = tablesWithIndexDifferences.SelectMany(x => x.MissingInTarget).Count();
         var indexesWithDifferences = tablesWithIndexDifferences.SelectMany(x => x.Different).Count();
+
+        var foreignKeysMissingInSource = tablesWithForeignKeyDifferences.SelectMany(x => x.MissingInSource).Count();
+        var foreignKeysMissingInTarget = tablesWithForeignKeyDifferences.SelectMany(x => x.MissingInTarget).Count();
+        var foreignKeysWithDifferences = tablesWithForeignKeyDifferences.SelectMany(x => x.Different).Count();
 
         if (options.Verbose)
         {
@@ -67,6 +75,9 @@ public class Comparer
                 IndexesMissingInSource = indexesMissingInSource,
                 IndexesMissingInTarget = indexesMissingInTarget,
                 IndexesWithDifferences = indexesWithDifferences,
+                ForeignKeysMissingInSource = foreignKeysMissingInSource,
+                ForeignKeysMissingInTarget = foreignKeysMissingInTarget,
+                ForeignKeysWithDifferences = foreignKeysWithDifferences,
             };
             Console.Error.WriteLine("Statistics:");
             json = JsonConvert.SerializeObject(statistics, Formatting.Indented);
