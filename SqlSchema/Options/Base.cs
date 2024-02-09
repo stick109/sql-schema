@@ -4,10 +4,10 @@ namespace SqlSchema.Options
 {
     public class Base
     {
-        [Option('v', Default = false, HelpText = "Verbose")]
+        [Option('v', Default = false, HelpText = "Verbose.")]
         public bool Verbose { get; set; }
 
-        [Option("debug", Default = false, HelpText = "Verbose")]
+        [Option("debug", Default = false, HelpText = "Even more verbose.")]
         public bool Debug { get; set; }
 
         public void Print()

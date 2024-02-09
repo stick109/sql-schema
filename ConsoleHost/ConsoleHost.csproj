@@ -1,22 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <InvariantGlobalization>false</InvariantGlobalization>
-    <AssemblyName>ssc</AssemblyName>
-    <RootNamespace>SqlSchema.ConsoleHost</RootNamespace>
-    <LangVersion>10</LangVersion>
-  </PropertyGroup>
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <InvariantGlobalization>false</InvariantGlobalization>
+        <AssemblyName>ssc</AssemblyName>
+        <RootNamespace>SqlSchema.ConsoleHost</RootNamespace>
+        <LangVersion>10</LangVersion>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <Deterministic>false</Deterministic>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="CommandLineParser" Version="2.9.1" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="CommandLineParser" Version="2.9.1" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\SqlSchema\SqlSchema.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\SqlSchema\SqlSchema.csproj" />
+    </ItemGroup>
 
 </Project>
