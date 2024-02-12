@@ -42,7 +42,7 @@ jobs:
     - name: Get version
       shell: pwsh
       run: | 
-          (Get-Command release/ssc).FileVersionInfo.FileVersion
+          (Get-Command release/ssc.dll).FileVersionInfo.FileVersion
     
     - name: Release
       uses: softprops/action-gh-release@v1
