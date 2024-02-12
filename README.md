@@ -10,34 +10,27 @@ All command line options are explained with **help** command. You can run `ssc h
 
 ## Extract command arguments
 
-  -s           Required. Server address.
-
-  -d           Required. Database name.
-
-  -v           (Default: false) Verbose.
-
-  --debug      (Default: false) Even more verbose.
-
-  --help       Display this help screen.
-
-  --version    Display version information.
+| Parameter | Required/Default | Description                  |
+|-----------|------------------|------------------------------|
+| -s        | Required.        | Server address.              |
+| -d        | Required.        | Database name.               |
+| -v        | (Default: false) | Verbose.                     |
+| --debug   | (Default: false) | Even more verbose.           |
+| --help    |                  | Display this help screen.    |
+| --version |                  | Display version information. |
 
   Example: `ssc extract -s localhost -d mydb > mydb.json`
 
 ## Compare command arguments
 
-  -s           Required. Source schema.
-
-  -t           Required. Target schema.
-
-  -d           (Default: false) Show all properties of missing tables, including columns and indexes.
-
-  -v           (Default: false) Verbose.
-
-  --debug      (Default: false) Even more verbose.
-
-  --help       Display this help screen.
-
-  --version    Display version information.
+| Parameter | Required/Default | Description                                                           |
+|-----------|------------------|-----------------------------------------------------------------------|
+| -s        | Required.        | Source schema.                                                        |
+| -t        | Required.        | Target schema.                                                        |
+| -d        | (Default: false) | Show all properties of missing tables, including columns and indexes. |
+| -v        | (Default: false) | Verbose.                                                              |
+| --debug   | (Default: false) | Even more verbose.                                                    |
+| --help    |                 | Display this help screen.                                             |
+| --version |                 | Display version information.                                          |
 
   Example: `ssc compare -s source.json -t target.json > comparison.json`
