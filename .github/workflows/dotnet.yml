@@ -39,6 +39,11 @@ jobs:
       run: | 
           Get-ChildItem -Path release/*
     
+    - name: Get version
+      shell: pwsh
+      run: | 
+          (Get-Command release/ssc).FileVersionInfo.FileVersion
+    
     - name: Release
       uses: softprops/action-gh-release@v1
       env:
