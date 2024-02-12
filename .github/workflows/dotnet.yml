@@ -33,6 +33,12 @@ jobs:
 
     - name: Publish  
       run: dotnet publish -c Release -o release
+
+    - name: List published files
+      shell: pwsh
+      run: | 
+          ls
+          ls release/*
     
     - name: Release
       uses: softprops/action-gh-release@v1
