@@ -37,8 +37,7 @@ jobs:
     - name: List published files
       shell: pwsh
       run: | 
-          ls
-          ls release/*
+          Get-ChildItem -Path release/*.* -Recurse
     
     - name: Release
       uses: softprops/action-gh-release@v1
