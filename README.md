@@ -1,5 +1,7 @@
 # Sql Schema Comparer for Microsoft Sql Server
 
+[![.NET](https://github.com/stick109/sql-schema/actions/workflows/dotnet.yml/badge.svg)](https://github.com/stick109/sql-schema/actions/workflows/dotnet.yml)
+
 This tool supports three commands: **extract**, **compare**, and **help**. 
 
 **Extract** command allows you to extract schema from given database instance into json file. This can be helpful in a number of scenarios. For example, you can commit result of the extract command to your source control to track changes in your database schema if you don't have better way of tracking schema changes.
