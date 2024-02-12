@@ -42,7 +42,7 @@ jobs:
     - name: Get version
       shell: pwsh
       run: | 
-          $x = (Get-Command .\ssc.dll); $x
+          $x = (Get-Command release/ssc.dll); $x
     
     - name: Release
       uses: softprops/action-gh-release@v1
