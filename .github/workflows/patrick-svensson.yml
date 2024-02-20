@@ -9,17 +9,18 @@ jobs:
     name: Release
     strategy:
       matrix:
-        kind: ['linux', 'windows', 'macOS']
+        kind: ['windows']
+        # kind: ['linux', 'windows', 'macOS']
         include:
-          - kind: linux
-            os: ubuntu-latest
-            target: linux-x64
+        #   - kind: linux
+        #     os: ubuntu-latest
+        #     target: linux-x64
           - kind: windows
             os: windows-latest
             target: win-x64
-          - kind: macOS
-            os: macos-latest
-            target: osx-x64
+        #   - kind: macOS
+        #     os: macos-latest
+        #     target: osx-x64
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
@@ -28,7 +29,7 @@ jobs:
       - name: Setup dotnet
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 3.1.101
+          dotnet-version: 3.1.x
 
       - name: Build
         shell: bash
@@ -37,7 +38,7 @@ jobs:
           release_name="App-$tag-${{ matrix.target }}"
 
           # Build everything
-          dotnet publish --framework netcoreapp3.1 --runtime "${{ matrix.target }}" -c Release -o "$release_name"
+          dotnet publish sql-schema/sql-schema/ConsoleHost/ConsoleHost.csproj --framework netcoreapp3.1 --runtime "${{ matrix.target }}" -c Release -o "$release_name"
 
           # Pack files
           if [ "${{ matrix.target }}" == "win-x64" ]; then
