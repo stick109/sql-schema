@@ -28,7 +28,7 @@ jobs:
     - name: List all files
       shell: pwsh
       run: | 
-          Get-ChildItem -Path ./* -Recursive
+          Get-ChildItem -Path ./* -Recurse
   
     - name: Build
       run: dotnet build --no-restore
