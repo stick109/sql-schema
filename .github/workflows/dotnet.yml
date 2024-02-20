@@ -25,6 +25,11 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
 
+    - name: List all files
+      shell: pwsh
+      run: | 
+          Get-ChildItem -Path ./* -Recursive
+  
     - name: Build
       run: dotnet build --no-restore
 
