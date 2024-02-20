@@ -1,6 +1,8 @@
 # Sql Schema Comparer for Microsoft Sql Server
 
-[![.NET](https://github.com/stick109/sql-schema/actions/workflows/dotnet.yml/badge.svg)](https://github.com/stick109/sql-schema/actions/workflows/dotnet.yml)
+[![Build](https://github.com/stick109/sql-schema/actions/workflows/build.yml/badge.svg)](https://github.com/stick109/sql-schema/actions/workflows/build.yml)
+
+[![Publish](https://github.com/stick109/sql-schema/actions/workflows/release.yml/badge.svg)](https://github.com/stick109/sql-schema/actions/workflows/release.yml)
 
 This tool supports three commands: **extract**, **compare**, and **help**. 
 
